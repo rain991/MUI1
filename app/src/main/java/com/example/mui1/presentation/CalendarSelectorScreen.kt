@@ -10,20 +10,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import com.example.mui1.data.TimeOptions
-import java.util.Date
+import com.example.mui1.data.CalendarCalculatorViewModel
 
 @Composable
 fun CalendarSelectorScreen(
-    currentSelectedDate: Date,
-    onDateSelected: (Date) -> Unit,
-    onBackClick: () -> Unit,
-    onFutureClick: () -> Unit,
-    onSelectedTimeOptionChange: (TimeOptions) -> Unit
+    viewModel : CalendarCalculatorViewModel
 ) {
     Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
-            Text(text = "Date Calculator", style = TextStyle(fontWeight = FontWeight.SemiBold)
+            Text(text = "Date Calculator", style = TextStyle(fontWeight = FontWeight.SemiBold))
         }
         CalendarSelectorScreenComponent(paddingValues)
     }
