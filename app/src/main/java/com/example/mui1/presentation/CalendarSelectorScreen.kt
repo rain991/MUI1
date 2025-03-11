@@ -20,6 +20,6 @@ fun CalendarSelectorScreen(
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
             Text(text = "Date Calculator", style = TextStyle(fontWeight = FontWeight.SemiBold))
         }
-        CalendarSelectorScreenComponent(paddingValues)
+        CalendarSelectorScreenComponent(paddingValues = paddingValues, viewModel = viewModel)
     }
 }
