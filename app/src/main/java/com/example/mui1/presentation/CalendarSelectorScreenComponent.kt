@@ -1,5 +1,6 @@
 package com.example.mui1.presentation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,8 +11,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -48,26 +52,36 @@ fun CalendarSelectorScreenComponent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = Date(currentSelectedTimeMillis).formatToText(Locale.getDefault()))
-        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Selected date", style = MaterialTheme.typography.headlineMedium)
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+            text = Date(currentSelectedTimeMillis).formatToText(Locale.getDefault()),
+            style = MaterialTheme.typography.headlineSmall
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        HorizontalDivider(modifier = Modifier.fillMaxWidth(0.4f))
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(text = "Time shift", style = MaterialTheme.typography.headlineMedium)
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            TextField(
+            BasicTextField(
                 value = dateShiftInput.toString(),
                 onValueChange = { value ->
                     dateShiftInput = value.toDouble()
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                textStyle = MaterialTheme.typography.headlineSmall
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            DropdownMenu {
+            DropdownMenu(currentTimeOption = timeOption) {
                 timeOption = it
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
+        // Buttons to trigger time calculation
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
@@ -95,7 +109,24 @@ fun CalendarSelectorScreenComponent(
                 Text(text = "Find future date")
             }
         }
-        Spacer(Modifier.height(16.dp))
-        DatePickerDocked()
+        AnimatedVisibility(resultMillis != null) {
+            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally){
+                Spacer(modifier = Modifier.height(12.dp))
+                HorizontalDivider(modifier = Modifier.fillMaxWidth(0.6f))
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(text = "Result date", style = MaterialTheme.typography.headlineMedium)
+                Text(
+                    text = Date(resultMillis!!).formatToText(Locale.getDefault()),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Button(onClick = {
+                    currentSelectedTimeMillis = resultMillis!!
+                    resultMillis = null
+                }) {
+                    Text(text = "Set as current date", style = MaterialTheme.typography.titleMedium)
+                }
+            }
+        }
     }
 }

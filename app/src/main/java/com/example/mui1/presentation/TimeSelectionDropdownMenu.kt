@@ -1,5 +1,6 @@
 package com.example.mui1.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -19,16 +20,14 @@ import androidx.compose.ui.unit.dp
 import com.example.mui1.data.TimeOptions
 
 @Composable
-fun DropdownMenu(selectedTimeOptions: (TimeOptions) -> Unit) {
+fun DropdownMenu(currentTimeOption : TimeOptions, selectedTimeOptions: (TimeOptions) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     val timeOptions = listOf(TimeOptions.Minutes, TimeOptions.Hours, TimeOptions.Days, TimeOptions.Weeks, TimeOptions.Months, TimeOptions.Years)
     Box(
         modifier = Modifier
             .padding(16.dp)
     ) {
-        IconButton(onClick = { expanded = !expanded }) {
-            Icon(Icons.Default.MoreVert, contentDescription = "More options")
-        }
+        Text(text = currentTimeOption.description, modifier = Modifier.clickable{ expanded = !expanded })
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
