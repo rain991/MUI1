@@ -1,5 +1,6 @@
 package com.example.mui1.data
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
@@ -13,11 +14,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.logging.Logger
 
 class CalendarCalculatorViewModel(private val dateCalculationDao: DateCalculationDAO, private val dateCalculator: DateCalculator) : ViewModel() {
     private val _calendarCalculatorScreenState = MutableStateFlow(
         CalendarSelectorScreenState(
-            selectedDate = Date(System.currentTimeMillis()),
+            selectedDate = Date(),
             resultDate = null,
             timeShift = 10.0,
             timeOptions = TimeOptions.Hours,
@@ -28,6 +30,7 @@ class CalendarCalculatorViewModel(private val dateCalculationDao: DateCalculatio
     val calendarCalculatorScreenState = _calendarCalculatorScreenState.asStateFlow()
 
     init {
+        _calendarCalculatorScreenState.update { it.copy(selectedDate = Date(System.currentTimeMillis())) }
         viewModelScope.launch {
             dateCalculationDao.getAll().collect { dateCalculations ->
                 _calendarCalculatorScreenState.update { it.copy(dateCalculations = dateCalculations) }
@@ -47,6 +50,7 @@ class CalendarCalculatorViewModel(private val dateCalculationDao: DateCalculatio
         clearError()
         try{
             val calculatedDate = dateCalculator.calculateDate(inputDate = _calendarCalculatorScreenState.value.selectedDate, timeShift = _calendarCalculatorScreenState.value.timeShift, direction = direction, timeOptions = _calendarCalculatorScreenState.value.timeOptions)
+            Log.d(CalendarCalculatorViewModel::class.java.simpleName, calculatedDate.time.toString())
             viewModelScope.launch {
                 addDateCalculation(DateCalculation(InputDate =  _calendarCalculatorScreenState.value.selectedDate.time, CalculatedDate = calculatedDate.time, TimeOption = _calendarCalculatorScreenState.value.timeOptions.description))
             }

@@ -17,26 +17,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.mui1.data.CalendarCalculatorViewModel
-import com.example.mui1.data.TimeOptions
 import com.example.mui1.data.TimeShiftDirection
-import com.example.mui1.data.formatToText
-import java.util.Date
-import java.util.Locale
+import com.example.mui1.data.formatDateWithYear
 
 @Composable
 fun CalendarSelectorScreenComponent(
@@ -54,7 +43,7 @@ fun CalendarSelectorScreenComponent(
         Text(text = "Selected date", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = screenState.value.selectedDate.formatToText(Locale.getDefault()),
+            text = screenState.value.selectedDate.formatDateWithYear(),
             style = MaterialTheme.typography.headlineSmall
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -105,7 +94,7 @@ fun CalendarSelectorScreenComponent(
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(text = "Result date", style = MaterialTheme.typography.headlineMedium)
                 Text(
-                    text = screenState.value.resultDate!!.formatToText(Locale.getDefault()),
+                    text = screenState.value.resultDate?.formatDateWithYear().toString(),
                     style = MaterialTheme.typography.headlineSmall
                 )
                 Spacer(modifier = Modifier.height(12.dp))

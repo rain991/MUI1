@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.mui1.R
 import com.example.mui1.data.TimeOptions
 import com.example.mui1.data.TimeShiftDirection
-import com.example.mui1.data.formatToText
+import com.example.mui1.data.formatDateWithYear
 import java.util.Date
 import java.util.Locale
 
@@ -46,7 +46,7 @@ fun DateCalculationComposable(inputDate : Date, calculatedDate : Date, timeShift
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = inputDate.formatToText(locale))
+            Text(text = inputDate.formatDateWithYear())
 
             Column(verticalArrangement = Arrangement.SpaceAround) {
                 Image(
@@ -56,7 +56,7 @@ fun DateCalculationComposable(inputDate : Date, calculatedDate : Date, timeShift
                 )
             }
 
-            Text(text = calculatedDate.formatToText(locale))
+            Text(text = calculatedDate.formatDateWithYear())
 
         }
     }
