@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -41,7 +42,7 @@ fun DateCalculationComposable(inputDate : Date, calculatedDate : Date, timeShift
         shape = MaterialTheme.shapes.medium
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -50,9 +51,12 @@ fun DateCalculationComposable(inputDate : Date, calculatedDate : Date, timeShift
             Column(verticalArrangement = Arrangement.SpaceAround) {
                 Image(
                     painter = painterResource(id = if (direction == TimeShiftDirection.FUTURE) R.drawable.clockwise_time else R.drawable.counterclockwise_time),
-                    contentDescription = null
+                    contentDescription = null,
+                    modifier = Modifier.height(40.dp)
                 )
             }
+
+            Text(text = calculatedDate.formatToText(locale))
 
         }
     }
