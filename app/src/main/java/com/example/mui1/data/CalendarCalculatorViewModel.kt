@@ -43,16 +43,12 @@ class CalendarCalculatorViewModel(private val dateCalculationDao: DateCalculatio
         return dateCalculationDao.getAll()
     }
 
-    fun calculateDate(
-        inputDate: Date,
-        timeShift: Double,
-        direction: TimeShiftDirection,
-        timeOptions: TimeOptions
-    ) {
+    fun calculateDate(direction : TimeShiftDirection) {
+        clearError()
         try{
-            val calculatedDate = dateCalculator.calculateDate(inputDate = inputDate, timeShift = timeShift, direction = direction, timeOptions = timeOptions)
+            val calculatedDate = dateCalculator.calculateDate(inputDate = _calendarCalculatorScreenState.value.selectedDate, timeShift = _calendarCalculatorScreenState.value.timeShift, direction = direction, timeOptions = _calendarCalculatorScreenState.value.timeOptions)
             viewModelScope.launch {
-                addDateCalculation(DateCalculation(InputDate = inputDate.time, CalculatedDate = calculatedDate.time, TimeOption = timeOptions.description))
+                addDateCalculation(DateCalculation(InputDate =  _calendarCalculatorScreenState.value.selectedDate.time, CalculatedDate = calculatedDate.time, TimeOption = _calendarCalculatorScreenState.value.timeOptions.description))
             }
             _calendarCalculatorScreenState.update { it.copy(resultDate = calculatedDate) }
         }catch (e : Exception){
@@ -71,6 +67,11 @@ class CalendarCalculatorViewModel(private val dateCalculationDao: DateCalculatio
 
     fun setTimeOptions(timeOptions: TimeOptions) {
         _calendarCalculatorScreenState.update { it.copy(timeOptions = timeOptions) }
+    }
+
+    fun setResultDateAsCurrentSelected(){
+        setSelectedDate(_calendarCalculatorScreenState.value.resultDate!!)
+        _calendarCalculatorScreenState.update { it.copy(resultDate = null) }
     }
 
     private fun clearError() {
