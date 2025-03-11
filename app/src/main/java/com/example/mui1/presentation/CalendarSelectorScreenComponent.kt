@@ -29,14 +29,12 @@ import com.example.mui1.data.formatDateWithYear
 
 @Composable
 fun CalendarSelectorScreenComponent(
-    paddingValues: PaddingValues,
     viewModel: CalendarCalculatorViewModel
 ) {
     val screenState = viewModel.calendarCalculatorScreenState.collectAsState()
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues),
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -104,6 +102,10 @@ fun CalendarSelectorScreenComponent(
                     Text(text = "Set as current date", style = MaterialTheme.typography.titleMedium)
                 }
             }
+        }
+
+        if(screenState.value.dateCalculations.isNotEmpty()){
+            DateCalculationRecordsComposable(dateCalculations = screenState.value.dateCalculations)
         }
     }
 }
